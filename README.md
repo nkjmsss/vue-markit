@@ -1,5 +1,7 @@
 # @nkjmsss/vue-markit
 
+Awesome WYSIWIG markdown editor for vue !!! (WIP)
+
 ## Build Setup
 
 ``` bash
