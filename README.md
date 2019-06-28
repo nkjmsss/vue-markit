@@ -1,4 +1,4 @@
-# @nkjmsss/vue-markit
+# vue-markit
 
 Awesome WYSIWIG markdown editor for vue !!! (WIP)
 
