@@ -1,6 +1,10 @@
 <template>
   <div>
-    index page
+    <h1>Basic example</h1>
+
+    <no-ssr placeholder="Loading...">
+      <vue-markit />
+    </no-ssr>
   </div>
 </template>
 

@@ -30,6 +30,15 @@ dev:
 exec:
 	docker exec -it $(shell cat ${cidfile}) ${EXEC_ARGS}
 
+.PHONY: stop
+stop:
+	docker stop $(shell cat ${cidfile})
+	rm -rf ${cidfile}
+
+.PHONY: logs
+logs:
+	docker logs -f $(shell cat ${cidfile})
+
 .PHONY: cleanup
 cleanup:
 	rm -rf node_modules/.cache/hard-source

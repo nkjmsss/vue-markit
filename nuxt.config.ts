@@ -1,3 +1,4 @@
+import path from 'path'
 import NuxtConfigueation from '@nuxt/config'
 
 const config: NuxtConfigueation = {
@@ -37,7 +38,9 @@ const config: NuxtConfigueation = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: [
+    '~/plugins/vue-markit.client.ts', //
+  ],
   /*
    ** Nuxt.js modules
    */
@@ -58,7 +61,12 @@ const config: NuxtConfigueation = {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {},
+    extend(config, ctx) {
+      ;((config.resolve || {}).alias || {})['vue-markit'] = path.join(
+        __dirname,
+        'lib'
+      )
+    },
 
     hardSource: true,
   },
