@@ -40,5 +40,6 @@ export default Events
 export {
   codemirrorEvents, //
   customEvents,
+  Events,
   EventName,
 }

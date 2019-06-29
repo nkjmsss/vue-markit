@@ -4,7 +4,7 @@ import Emitter from './Utils/Emitter'
 import Events, { codemirrorEvents } from './Events'
 
 export default class Editor extends Emitter {
-  codemirror: Codemirror.EditorFromTextArea | null = null
+  codemirror: Codemirror.EditorFromTextArea
   options: Codemirror.EditorConfiguration = {
     autofocus: true,
     inputStyle: 'contenteditable',
@@ -43,12 +43,10 @@ export default class Editor extends Emitter {
 
   setEmitEvents(): void {
     this.events.forEach(ev => {
-      if (this.codemirror) {
-        if (codemirrorEvents.some(v => v === ev)) {
-          this.codemirror.on(ev, () => {
-            this.emit(ev, this.codemirror as Codemirror.EditorFromTextArea)
-          })
-        }
+      if (codemirrorEvents.some(v => v === ev)) {
+        this.codemirror.on(ev, () => {
+          this.emit(ev, this.codemirror)
+        })
       }
     })
   }

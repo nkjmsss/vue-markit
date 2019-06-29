@@ -7,9 +7,6 @@ export default {
   },
 }
 
-type VueMarkitType = typeof VueMarkit
-
 export {
   VueMarkit, //
-  VueMarkitType,
 }
