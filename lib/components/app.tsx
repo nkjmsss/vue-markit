@@ -1,8 +1,16 @@
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
+import { VNode, CreateElement } from 'vue'
 import Codemirror from 'codemirror'
 import 'codemirror/lib/codemirror.css'
-import { VNode, CreateElement } from 'vue'
+import '../Styles/codemirror'
+import { css } from 'emotion'
 import Editor from '../Editor'
+
+// TODO fix styles
+const divStyle = css({
+  border: '1px solid #bbb',
+  height: '60vh',
+})
 
 @Component
 class VueMarkit extends Vue {
@@ -20,11 +28,21 @@ class VueMarkit extends Vue {
   })
   options!: Codemirror.EditorConfiguration
 
+  @Watch('options', {
+    deep: true,
+  })
+  onOptionsChanged(newval: Codemirror.EditorConfiguration): void {
+    if (this.editor) {
+      this.editor.emit('optionChange', newval)
+    }
+  }
+
   mounted(): void {
-    this.editor = new Editor(this.$refs.textarea as HTMLTextAreaElement, {
-      ...this.options,
-      value: this.value,
-    })
+    this.editor = new Editor(
+      this.$refs.textarea as HTMLTextAreaElement,
+      this.options,
+      this.value
+    )
 
     this.setEvents()
   }
@@ -39,7 +57,7 @@ class VueMarkit extends Vue {
 
   render(h: CreateElement): VNode {
     return (
-      <div>
+      <div class={divStyle}>
         <textarea ref="textarea" />
       </div>
     )

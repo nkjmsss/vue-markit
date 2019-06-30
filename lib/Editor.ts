@@ -1,7 +1,7 @@
 import Codemirror from 'codemirror'
 import 'codemirror/lib/codemirror.css'
 import Emitter from './Utils/Emitter'
-import Events, { codemirrorEvents } from './Events'
+import { CodemirrorEvents } from './Events'
 
 export default class Editor extends Emitter {
   codemirror: Codemirror.EditorFromTextArea
@@ -10,13 +10,13 @@ export default class Editor extends Emitter {
     inputStyle: 'contenteditable',
     lineWrapping: true,
     tabSize: 2,
-    value: '',
   }
-  events = Events
+  value: string = ''
 
   constructor(
     elt: HTMLTextAreaElement,
-    options?: Codemirror.EditorConfiguration
+    options?: Codemirror.EditorConfiguration,
+    value?: string
   ) {
     super()
 
@@ -24,7 +24,7 @@ export default class Editor extends Emitter {
 
     this.codemirror = Codemirror.fromTextArea(elt, this.options)
 
-    this.setValue()
+    this.setValue(value)
     this.setEmitEvents()
   }
 
@@ -35,19 +35,18 @@ export default class Editor extends Emitter {
     }
   }
 
-  setValue(): void {
+  setValue(value): void {
+    this.value = value
     if (this.codemirror) {
-      this.codemirror.setValue(this.options.value)
+      this.codemirror.setValue(this.value)
     }
   }
 
   setEmitEvents(): void {
-    this.events.forEach(ev => {
-      if (codemirrorEvents.some(v => v === ev)) {
-        this.codemirror.on(ev, () => {
-          this.emit(ev, this.codemirror)
-        })
-      }
+    CodemirrorEvents.forEach(ev => {
+      this.codemirror.on(ev, () => {
+        this.emit(ev, this.codemirror)
+      })
     })
   }
 }

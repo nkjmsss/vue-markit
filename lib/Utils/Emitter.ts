@@ -1,31 +1,44 @@
 import Codemirror from 'codemirror'
-import { EventName } from '../Events'
-type callbackFn = (
+import { EventName, CodemirrorEventName, CustomEventName } from '../Events'
+
+type CodemirrorCallbackFn = (
   cmInstance: Codemirror.EditorFromTextArea,
   ...args: any
 ) => any
 
+type CustomCallbackFn = (...args: any) => any
+
 export default class Emitter {
   callbacks: {
-    [key in EventName]?: callbackFn[]
+    [key in EventName]?: (CodemirrorCallbackFn | CustomCallbackFn)[]
   } = {}
 
   // Add an event listener for given event
-  on(event: EventName, fn: callbackFn) {
+  on(event: CodemirrorEventName, fn: CodemirrorCallbackFn): this
+  on(event: CustomEventName, fn: CustomCallbackFn): this
+  on(event: EventName, fn: CodemirrorCallbackFn | CustomCallbackFn): this {
     this.callbacks[event] = [...(this.callbacks[event] || []), fn]
 
     return this
   }
 
   emit(
-    event: EventName,
+    event: CodemirrorEventName,
     cminstance: Codemirror.EditorFromTextArea,
     ...args: any
-  ) {
+  ): this
+  emit(event: CustomEventName, ...args: any): this
+  emit(
+    event: EventName,
+    cminstance?: Codemirror.EditorFromTextArea,
+    ...args: any
+  ): this {
     const callbacks = this.callbacks[event]
 
     if (callbacks) {
-      callbacks.forEach(callback => callback.apply(this, [cminstance, ...args]))
+      callbacks.forEach(callback =>
+        callback.apply(this, cminstance ? [cminstance, ...args] : args)
+      )
     }
 
     return this
@@ -34,7 +47,10 @@ export default class Emitter {
   // Remove event listener for given event.
   // If fn is not provided, all event listeners for that event will be removed.
   // If neither is provided, all event listeners will be removed.
-  off(event?: EventName, fn?: callbackFn) {
+  off(): this
+  off(event: CodemirrorEventName, fn?: CodemirrorCallbackFn): this
+  off(event: CustomEventName, fn?: CustomCallbackFn): this
+  off(event?: EventName, fn?: CodemirrorCallbackFn | CustomCallbackFn): this {
     if (!event) {
       this.callbacks = {}
     } else {

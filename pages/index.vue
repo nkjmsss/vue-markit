@@ -13,7 +13,7 @@ import { Component, Vue } from 'vue-property-decorator'
 
 @Component
 class Index extends Vue {
-  src: string = 'foobar *text* aaa'
+  src: string = 'foobar *text*'
 }
 
 export default Index

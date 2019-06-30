@@ -1,4 +1,4 @@
-const codemirrorEvents = [
+const CodemirrorEvents = [
   'beforeChange',
   'beforeSelectionChange',
   'blur',
@@ -29,17 +29,23 @@ const codemirrorEvents = [
   'viewportChange',
 ] as const
 
-const customEvents = [] as const
+const CustomEvents = [
+  'optionChange', //
+] as const
 
-const Events = [...codemirrorEvents, ...customEvents] as const
+const Events = [...CodemirrorEvents, ...CustomEvents] as const
 
 type EventName = (typeof Events)[any]
+type CodemirrorEventName = (typeof CodemirrorEvents)[any]
+type CustomEventName = (typeof CustomEvents)[any]
 
 export default Events
 
 export {
-  codemirrorEvents, //
-  customEvents,
+  CodemirrorEvents, //
+  CustomEvents,
   Events,
+  CodemirrorEventName,
+  CustomEventName,
   EventName,
 }
