@@ -30,6 +30,7 @@ class VueMarkit extends Vue {
 
   @Watch('options', {
     deep: true,
+    immediate: true,
   })
   onOptionsChanged(newval: Codemirror.EditorConfiguration): void {
     if (this.editor) {
@@ -48,9 +49,14 @@ class VueMarkit extends Vue {
   }
 
   setEvents(): void {
-    if (this.editor) {
-      this.editor.on('change', c => {
+    const editor = this.editor
+
+    if (editor) {
+      editor.on('change', c => {
         this.$emit('input', c.getValue())
+      })
+      editor.on('optionChange', v => {
+        editor.setOptions(v)
       })
     }
   }

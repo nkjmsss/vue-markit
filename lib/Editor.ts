@@ -11,7 +11,7 @@ export default class Editor extends Emitter {
     lineWrapping: true,
     tabSize: 2,
   }
-  value: string = ''
+  value!: string
 
   constructor(
     elt: HTMLTextAreaElement,
@@ -20,22 +20,31 @@ export default class Editor extends Emitter {
   ) {
     super()
 
-    this.setOptions(options || {})
-
     this.codemirror = Codemirror.fromTextArea(elt, this.options)
 
+    this.setOptions(options)
     this.setValue(value)
     this.setEmitEvents()
   }
 
-  setOptions(options: Codemirror.EditorConfiguration): void {
-    this.options = {
-      ...this.options,
-      ...options,
+  setOptions(options: Codemirror.EditorConfiguration | undefined): void {
+    if (!options) {
+      return
     }
+
+    Object.keys(options)
+      .filter(key => this.options[key] !== options[key])
+      .forEach(key => {
+        this.codemirror.setOption(key, options[key])
+        this.options[key] = options[key]
+      })
   }
 
-  setValue(value): void {
+  setValue(value: string | undefined): void {
+    if (!value) {
+      return
+    }
+
     this.value = value
     if (this.codemirror) {
       this.codemirror.setValue(this.value)
