@@ -6,7 +6,6 @@ ifeq (exec,$(firstword $(MAKECMDGOALS)))
 endif
 
 define docker
-	rm -rf ${cidfile} ;\
 	docker run \
 		--rm \
 		-v $(CURDIR):/src \

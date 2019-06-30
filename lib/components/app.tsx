@@ -1,6 +1,7 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { VNode, CreateElement } from 'vue'
 import Codemirror from 'codemirror'
+import 'codemirror/mode/gfm/gfm'
 import 'codemirror/lib/codemirror.css'
 import '../Styles/codemirror'
 import { css } from 'emotion'

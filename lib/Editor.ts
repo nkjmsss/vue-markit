@@ -10,6 +10,7 @@ export default class Editor extends Emitter {
     inputStyle: 'contenteditable',
     lineWrapping: true,
     tabSize: 2,
+    mode: 'gfm', // TODO create my own type
   }
   value!: string
 
