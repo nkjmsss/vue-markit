@@ -14,13 +14,17 @@ injectGlobal({
     border: 'none',
     background: 'none',
   },
+  '.CodeMirror-gutter-wrapper': {
+    height: '100%',
+  },
   '.CodeMirror-linenumber': {
     padding: '0 16px',
     textAlign: 'center',
+    fontSize: '0.8em',
     color: '#bbb',
-    // to make font size smaller (work around)
-    transform: 'scale(0.8)',
-    transformOrigin: 'center center',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
   },
 
   // active line settings
