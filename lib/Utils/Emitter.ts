@@ -16,7 +16,10 @@ export default class Emitter {
   // Add an event listener for given event
   on(event: CodemirrorEventName, fn: CodemirrorCallbackFn): this
   on(event: CustomEventName, fn: CustomCallbackFn): this
-  on(event: EventName, fn: CodemirrorCallbackFn | CustomCallbackFn): this {
+  on(
+    event: CodemirrorEventName | CustomEventName,
+    fn: CodemirrorCallbackFn | CustomCallbackFn
+  ): this {
     this.callbacks[event] = [...(this.callbacks[event] || []), fn]
 
     return this
@@ -67,4 +70,9 @@ export default class Emitter {
 
     return this
   }
+}
+
+export {
+  CodemirrorCallbackFn, //
+  CustomCallbackFn,
 }

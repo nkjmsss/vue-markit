@@ -11,13 +11,12 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import Codemirror from 'codemirror'
+import sample from '~/assets/sample'
 
 @Component
 class Index extends Vue {
-  src: string = 'foobar *text*'
-  options: Codemirror.EditorConfiguration = {
-    lineNumbers: false,
-  }
+  src: string = sample
+  options: Codemirror.EditorConfiguration = {}
 }
 
 export default Index

@@ -1,16 +1,13 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { VNode, CreateElement } from 'vue'
 import Codemirror from 'codemirror'
-import 'codemirror/mode/gfm/gfm'
-import 'codemirror/lib/codemirror.css'
-import '../Styles/codemirror'
 import { css } from 'emotion'
 import Editor from '../Editor'
 
 // TODO fix styles
 const divStyle = css({
   border: '1px solid #bbb',
-  height: '60vh',
+  height: '80vh',
 })
 
 @Component
@@ -42,8 +39,7 @@ class VueMarkit extends Vue {
   mounted(): void {
     this.editor = new Editor(
       this.$refs.textarea as HTMLTextAreaElement,
-      this.options,
-      this.value
+      this.options
     )
 
     this.setEvents()
@@ -65,7 +61,7 @@ class VueMarkit extends Vue {
   render(h: CreateElement): VNode {
     return (
       <div class={divStyle}>
-        <textarea ref="textarea" />
+        <textarea ref="textarea" value={this.value} />
       </div>
     )
   }
