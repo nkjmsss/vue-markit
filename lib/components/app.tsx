@@ -1,6 +1,6 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { VNode, CreateElement } from 'vue'
-import Codemirror from 'codemirror'
+import CodeMirror from 'codemirror'
 import { css } from 'emotion'
 import Editor from '../Editor'
 
@@ -24,13 +24,13 @@ class VueMarkit extends Vue {
     type: Object,
     default: () => ({}),
   })
-  options!: Codemirror.EditorConfiguration
+  options!: CodeMirror.EditorConfiguration
 
   @Watch('options', {
     deep: true,
     immediate: true,
   })
-  onOptionsChanged(newval: Codemirror.EditorConfiguration): void {
+  onOptionsChanged(newval: CodeMirror.EditorConfiguration): void {
     if (this.editor) {
       this.editor.emit('optionChange', newval)
     }

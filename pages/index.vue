@@ -10,13 +10,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import Codemirror from 'codemirror'
+import { EditorConfiguration } from 'vue-markit'
 import sample from '~/assets/sample'
 
 @Component
 class Index extends Vue {
   src: string = sample
-  options: Codemirror.EditorConfiguration = {
+  options: EditorConfiguration = {
     // lineNumberFormatter: line => String(line),
   }
 }

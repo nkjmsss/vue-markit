@@ -16,7 +16,7 @@ injectGlobal({
     background: 'none',
   },
   '.CodeMirror-linenumber': {
-    padding: '0 16px',
+    width: 50,
     textAlign: 'center',
     color: '#bbb',
     transform: 'scale(0.8)',

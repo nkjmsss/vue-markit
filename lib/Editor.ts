@@ -1,15 +1,24 @@
-import Codemirror from 'codemirror'
+import CodeMirror from 'codemirror'
 import 'codemirror/lib/codemirror.css'
-import 'codemirror/mode/gfm/gfm'
 import 'codemirror/addon/selection/active-line'
+import './Modes/alacarte-md'
+import { ModeConfigurarion as ModeConfigurarionBase } from './Modes/types'
 import Emitter from './Utils/Emitter'
-import { CodemirrorEvents } from './Events'
+import { CodeMirrorEvents } from './Events'
 import './Styles/codemirror'
 import toPascalCase from './Utils/toPascalCase'
 
+export interface EditorConfiguration extends CodeMirror.EditorConfiguration {
+  mode?: ModeConfigurarion | string
+}
+
+interface ModeConfigurarion extends ModeConfigurarionBase {
+  name: string
+}
+
 export default class Editor extends Emitter {
-  codemirror: Codemirror.EditorFromTextArea
-  options: Codemirror.EditorConfiguration = {
+  codemirror: CodeMirror.EditorFromTextArea
+  options: EditorConfiguration = {
     inputStyle: 'contenteditable',
     lineNumbers: true,
     lineNumberFormatter: line =>
@@ -21,25 +30,28 @@ export default class Editor extends Emitter {
         ? String(line)
         : '',
     lineWrapping: true,
-    mode: 'gfm',
+    mode: {
+      name: 'alacarte-md',
+      // highlightFormatting: true,
+    },
     tabSize: 2,
     styleActiveLine: true,
   }
 
   constructor(
     elt: HTMLTextAreaElement,
-    options?: Codemirror.EditorConfiguration
+    options?: CodeMirror.EditorConfiguration
   ) {
     super()
 
-    this.codemirror = Codemirror.fromTextArea(elt, this.options)
+    this.codemirror = CodeMirror.fromTextArea(elt, this.options)
 
     this.setOptions(options)
     this.setEmitEvents()
     this.registerEvents()
   }
 
-  setOptions(options: Codemirror.EditorConfiguration | undefined): void {
+  setOptions(options: CodeMirror.EditorConfiguration | undefined): void {
     if (!options) {
       return
     }
@@ -53,7 +65,7 @@ export default class Editor extends Emitter {
   }
 
   setEmitEvents(): void {
-    CodemirrorEvents.forEach(ev => {
+    CodeMirrorEvents.forEach(ev => {
       this.codemirror.on(ev, () => {
         this.emit(ev, this.codemirror)
       })
@@ -61,7 +73,7 @@ export default class Editor extends Emitter {
   }
 
   registerEvents(): void {
-    CodemirrorEvents.forEach(ev => {
+    CodeMirrorEvents.forEach(ev => {
       const handlerName = `handle${toPascalCase(ev)}`
 
       if (this[handlerName]) {
@@ -70,7 +82,7 @@ export default class Editor extends Emitter {
     })
   }
 
-  handleCursorActivity(c: Codemirror.EditorFromTextArea): void {
+  handleCursorActivity(c: CodeMirror.EditorFromTextArea): void {
     if (
       this.options.lineNumberFormatter &&
       c.getOption('lineNumberFormatter')

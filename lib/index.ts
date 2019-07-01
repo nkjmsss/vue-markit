@@ -1,5 +1,6 @@
-import { VueMarkit } from './Components'
 import Vue, { VueConstructor } from 'vue'
+import { VueMarkit } from './Components'
+import { EditorConfiguration } from './Editor'
 
 export default {
   install(Vue: VueConstructor<Vue>) {
@@ -9,4 +10,5 @@ export default {
 
 export {
   VueMarkit, //
+  EditorConfiguration,
 }
