@@ -16,7 +16,9 @@ import sample from '~/assets/sample'
 @Component
 class Index extends Vue {
   src: string = sample
-  options: Codemirror.EditorConfiguration = {}
+  options: Codemirror.EditorConfiguration = {
+    // lineNumberFormatter: line => String(line),
+  }
 }
 
 export default Index

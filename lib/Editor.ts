@@ -71,12 +71,12 @@ export default class Editor extends Emitter {
   }
 
   handleCursorActivity(c: Codemirror.EditorFromTextArea): void {
-    // update current line position by re-binding 'this'
-    if (this.options.lineNumberFormatter) {
+    if (
+      this.options.lineNumberFormatter &&
+      c.getOption('lineNumberFormatter')
+    ) {
       this.setOptions({
-        lineNumberFormatter: this.options.lineNumberFormatter.bind({
-          codemirror: c,
-        }),
+        lineNumberFormatter: c.getOption('lineNumberFormatter'),
       })
     }
   }
