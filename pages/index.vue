@@ -10,16 +10,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { EditorConfiguration } from 'vue-markit'
 import sample from '~/assets/sample'
 
 @Component
 class Index extends Vue {
   src: string = sample
-  options: EditorConfiguration = {
-    // lineNumberFormatter: line => String(line),
-    lineNumbers: true,
-  }
+  options = {}
 }
 
 export default Index

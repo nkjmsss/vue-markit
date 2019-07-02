@@ -1,47 +1,24 @@
-import CodeMirror from 'codemirror'
-import { EventName, CodeMirrorEventName, CustomEventName } from '../Events'
+import { EventName } from '../Events'
 
-type CodeMirrorCallbackFn = (
-  cmInstance: CodeMirror.EditorFromTextArea,
-  ...args: any
-) => any
-
-type CustomCallbackFn = (...args: any) => any
+export type CallbackFn = (...args: any) => any
 
 export default class Emitter {
   callbacks: {
-    [key in EventName]?: (CodeMirrorCallbackFn | CustomCallbackFn)[]
+    [key in EventName]?: CallbackFn[]
   } = {}
 
   // Add an event listener for given event
-  on(event: CodeMirrorEventName, fn: CodeMirrorCallbackFn): this
-  on(event: CustomEventName, fn: CustomCallbackFn): this
-  on(
-    event: CodeMirrorEventName | CustomEventName,
-    fn: CodeMirrorCallbackFn | CustomCallbackFn
-  ): this {
+  on(event: EventName, fn: CallbackFn): this {
     this.callbacks[event] = [...(this.callbacks[event] || []), fn]
 
     return this
   }
 
-  emit(
-    event: CodeMirrorEventName,
-    cminstance: CodeMirror.EditorFromTextArea,
-    ...args: any
-  ): this
-  emit(event: CustomEventName, ...args: any): this
-  emit(
-    event: EventName,
-    cminstance?: CodeMirror.EditorFromTextArea,
-    ...args: any
-  ): this {
+  emit(event: EventName, ...args: any): this {
     const callbacks = this.callbacks[event]
 
     if (callbacks) {
-      callbacks.forEach(callback =>
-        callback.apply(this, cminstance ? [cminstance, ...args] : args)
-      )
+      callbacks.forEach(callback => callback.apply(this, args))
     }
 
     return this
@@ -50,10 +27,7 @@ export default class Emitter {
   // Remove event listener for given event.
   // If fn is not provided, all event listeners for that event will be removed.
   // If neither is provided, all event listeners will be removed.
-  off(): this
-  off(event: CodeMirrorEventName, fn?: CodeMirrorCallbackFn): this
-  off(event: CustomEventName, fn?: CustomCallbackFn): this
-  off(event?: EventName, fn?: CodeMirrorCallbackFn | CustomCallbackFn): this {
+  off(event?: EventName, fn?: CallbackFn): this {
     if (!event) {
       this.callbacks = {}
     } else {
@@ -70,9 +44,4 @@ export default class Emitter {
 
     return this
   }
-}
-
-export {
-  CodeMirrorCallbackFn, //
-  CustomCallbackFn,
 }

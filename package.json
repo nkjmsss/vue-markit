@@ -40,8 +40,6 @@
     "vue-property-decorator": "^8.2.1"
   },
   "dependencies": {
-    "@types/codemirror": "0.0.75",
-    "codemirror": "^5.48.0",
     "emotion": "^10.0.14"
   }
 }
