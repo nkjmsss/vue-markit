@@ -1,8 +1,10 @@
 import CodeMirror from 'codemirror'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/addon/selection/active-line'
-import './Modes/alacarte-md'
-import { ModeConfigurarion as ModeConfigurarionBase } from './Modes/types'
+import './Modes/alacarte-md/alacarte-md'
+import { ModeConfigurarion as ModeConfigurarionBase } from './Modes/alacarte-md/types'
+// import './Modes/wip/alacarte-md'
+// import { ModeConfigurarion as ModeConfigurarionBase } from './Modes/wip/types'
 import Emitter from './Utils/Emitter'
 import { CodeMirrorEvents } from './Events'
 import './Styles/codemirror'
@@ -83,13 +85,21 @@ export default class Editor extends Emitter {
   }
 
   handleCursorActivity(c: CodeMirror.EditorFromTextArea): void {
-    if (
-      this.options.lineNumberFormatter &&
-      c.getOption('lineNumberFormatter')
-    ) {
-      this.setOptions({
-        lineNumberFormatter: c.getOption('lineNumberFormatter'),
-      })
+    // re-register lineNumberFormatter to update this.codemirror.getDoc().getCursor().line
+    if (this.options.lineNumbers) {
+      if (
+        this.options.lineNumberFormatter &&
+        c.getOption('lineNumberFormatter')
+      ) {
+        this.setOptions({
+          lineNumberFormatter: c.getOption('lineNumberFormatter'),
+        })
+      }
     }
+
+    // const a = this.codemirror.getLineTokens(
+    //   this.codemirror.getDoc().getCursor().line
+    // )
+    // console.log(a)
   }
 }

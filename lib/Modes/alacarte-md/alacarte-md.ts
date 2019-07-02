@@ -668,8 +668,8 @@ CodeMirror.defineMode('alacarte-md', function(
         (!punctuation.test(before) ||
           /\s/.test(after) ||
           punctuation.test(after))
-      let setEm = null
-      let setStrong = null
+      let setEm: boolean | null = null
+      let setStrong: boolean | null = null
       if (len % 2) {
         // Em
         if (

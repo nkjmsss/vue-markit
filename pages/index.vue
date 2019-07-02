@@ -18,6 +18,7 @@ class Index extends Vue {
   src: string = sample
   options: EditorConfiguration = {
     // lineNumberFormatter: line => String(line),
+    lineNumbers: true,
   }
 }
 
