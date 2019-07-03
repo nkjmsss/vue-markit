@@ -1,13 +1,7 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { VNode, CreateElement } from 'vue'
-import { css } from 'emotion'
 import Editor, { EditorConfiguration } from '../Editor'
-
-// TODO fix styles
-const divStyle = css({
-  border: '1px solid #bbb',
-  // height: '80vh',
-})
+import styles from '../styles'
 
 @Component
 class VueMarkit extends Vue {
@@ -18,6 +12,13 @@ class VueMarkit extends Vue {
     default: '',
   })
   value!: string
+
+  // TODO
+  // @Prop({
+  //   type: String,
+  //   default: 'What do you feel?',
+  // })
+  // placeholder!: string
 
   @Prop({
     type: Object,
@@ -36,7 +37,11 @@ class VueMarkit extends Vue {
   }
 
   mounted(): void {
-    this.editor = new Editor(this.options)
+    this.editor = new Editor(
+      this.$refs.target as HTMLElement,
+      this.value,
+      this.options
+    )
 
     this.setEvents()
   }
@@ -44,11 +49,7 @@ class VueMarkit extends Vue {
   setEvents(): void {}
 
   render(h: CreateElement): VNode {
-    return (
-      <div class={divStyle} contenteditable>
-        {this.value}
-      </div>
-    )
+    return <article ref="target" class={styles}></article>
   }
 }
 

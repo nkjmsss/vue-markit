@@ -40,6 +40,7 @@
     "vue-property-decorator": "^8.2.1"
   },
   "dependencies": {
-    "emotion": "^10.0.14"
+    "emotion": "^10.0.14",
+    "ts-keycode-enum": "^1.0.6"
   }
 }
