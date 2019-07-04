@@ -1,17 +1,22 @@
 import Emitter from './Utils/Emitter'
-import { Events } from './Events'
+import { Events, EventName } from './Events'
 import toPascalCase from './Utils/toPascalCase'
 import { Node } from './Nodes/Node'
-import Paragraph from './Nodes/Blocks/Paragraph'
+import {
+  Paragraph, //
+  BulletList,
+} from './Nodes/Blocks'
 
 export interface EditorConfiguration {
   Nodes?: (typeof Node)[]
 }
 
-export default class Editor extends Emitter {
+export default class Editor extends Emitter<EventName> {
   coreNodes: (typeof Node)[] = [Paragraph]
   options: Required<EditorConfiguration> = {
-    Nodes: [],
+    Nodes: [
+      BulletList, //
+    ],
   }
   private target: HTMLElement
 

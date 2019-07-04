@@ -1,20 +1,22 @@
-import { EventName } from '../Events'
-
 export type CallbackFn = (...args: any) => any
 
-export default class Emitter {
-  callbacks: {
-    [key in EventName]?: CallbackFn[]
-  } = {}
+export default class Emitter<T extends string> {
+  callbacks: Partial<Record<T, CallbackFn[]>> = {}
 
   // Add an event listener for given event
-  on(event: EventName, fn: CallbackFn): this {
-    this.callbacks[event] = [...(this.callbacks[event] || []), fn]
+  on(event: T, fn: CallbackFn): this {
+    const callbacks = this.callbacks[event]
+
+    if (callbacks) {
+      callbacks.push(fn)
+    } else {
+      this.callbacks[event] = [fn]
+    }
 
     return this
   }
 
-  emit(event: EventName, ...args: any): this {
+  emit(event: T, ...args: any): this {
     const callbacks = this.callbacks[event]
 
     if (callbacks) {
@@ -27,7 +29,7 @@ export default class Emitter {
   // Remove event listener for given event.
   // If fn is not provided, all event listeners for that event will be removed.
   // If neither is provided, all event listeners will be removed.
-  off(event?: EventName, fn?: CallbackFn): this {
+  off(event?: T, fn?: CallbackFn): this {
     if (!event) {
       this.callbacks = {}
     } else {
