@@ -1,12 +1,11 @@
 import Emitter from '../../Utils/Emitter'
 
-const StoreEvents = [
-  'keydown', //
-] as const
+const StoreEvents = [] as const
 
-type StoreEventsName = (typeof StoreEvents)[any]
+interface NodeStore extends Store {}
 
-export default class Store extends Emitter<StoreEventsName> {
+export default class Store extends Emitter<(typeof StoreEvents)[any]>
+  implements NodeStore {
   initialized = false
 
   constructor() {

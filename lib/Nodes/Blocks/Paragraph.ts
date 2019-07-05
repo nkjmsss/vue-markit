@@ -23,7 +23,7 @@ export default class Paragraph extends Node {
   }
 
   private registerKeyEvents(): void {
-    this.state.on('keydown', e => {
+    this.on('keydown', e => {
       switch (e.keyCode) {
         case Key.Backspace:
           // don't allow removing first p tag
