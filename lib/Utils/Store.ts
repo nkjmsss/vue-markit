@@ -15,7 +15,7 @@ export default interface Store extends Emitter<StoreEventsName> {
 }
 
 export default class Store extends Emitter<StoreEventsName> {
-  private store = {
+  private state = {
     childNodes: [] as Node[],
   }
 
@@ -23,15 +23,15 @@ export default class Store extends Emitter<StoreEventsName> {
     super()
   }
 
-  public commit<T extends keyof Store['store']>(
+  public commit<T extends keyof Store['state']>(
     key: T,
-    payload: Store['store'][T]
+    payload: Store['state'][T]
   ): void {
-    this.store[key] = payload
+    this.state[key] = payload
     this.emit('change', this)
   }
 
-  get childNodes(): Store['store']['childNodes'] {
-    return this.store.childNodes
+  get childNodes(): Store['state']['childNodes'] {
+    return this.state.childNodes
   }
 }
