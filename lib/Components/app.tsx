@@ -1,10 +1,12 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { VNode, CreateElement } from 'vue'
 import Editor, { EditorConfiguration } from '../Editor'
+import { Store } from '../Utils'
 
 @Component
 class VueMarkit extends Vue {
   editor: Editor | null = null
+  state: Store | null = null
 
   @Prop({
     type: String,
@@ -38,10 +40,8 @@ class VueMarkit extends Vue {
       this.options
     )
 
-    this.setEvents()
+    this.state = this.editor.state
   }
-
-  setEvents(): void {}
 
   render(h: CreateElement): VNode {
     return <article ref="target"></article>

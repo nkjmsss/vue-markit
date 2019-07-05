@@ -1,11 +1,16 @@
 import { css, Interpolation } from 'emotion'
-import Emitter from './Utils/Emitter'
-import toPascalCase from './Utils/toPascalCase'
+import {
+  toPascalCase, //
+  Emitter,
+  EventBus,
+  Store,
+} from './Utils'
 import Node from './Nodes/Node'
 import {
   Paragraph, //
   BulletList,
 } from './Nodes/Blocks'
+import { KeyboardEvents } from './Nodes/Core'
 import baseStyle from './Styles'
 
 export interface EditorConfiguration {
@@ -16,14 +21,19 @@ export interface EditorConfiguration {
 const EventList = [] as const
 
 export default class Editor extends Emitter<(typeof EventList)[any]> {
-  coreNodes: (typeof Node)[] = [Paragraph]
-  options: Required<EditorConfiguration> = {
+  private coreNodes: (typeof Node)[] = [
+    Paragraph, //
+    KeyboardEvents,
+  ]
+  private options: Required<EditorConfiguration> = {
     Nodes: [
       BulletList, //
     ],
     StyleOverides: {},
   }
   private target: HTMLElement
+  readonly state = new Store()
+  readonly eventbus = new EventBus()
 
   // TODO initial value and paste event
   constructor(
@@ -62,7 +72,7 @@ export default class Editor extends Emitter<(typeof EventList)[any]> {
       const handlerName = `handle${toPascalCase(ev)}`
 
       if (this[handlerName]) {
-        this.on(ev, this[handlerName])
+        this.on(ev, this[handlerName].bind(this))
       }
     })
   }
@@ -71,7 +81,7 @@ export default class Editor extends Emitter<(typeof EventList)[any]> {
     const styles = [baseStyle]
 
     this.coreNodes.concat(this.options.Nodes).forEach(cls => {
-      const node = new cls(this.target)
+      const node = new cls(this.target, this.state, this.eventbus)
       styles.push(node.styles)
     })
 

@@ -1,6 +1,10 @@
 import { Key } from 'ts-keycode-enum'
 import { NodeBase } from '../Node'
-import { wrap } from '../../Utils/wrap'
+import {
+  wrap, //
+  Store,
+  EventBus,
+} from '../../Utils'
 import { paragraph } from '../../Styles'
 
 export default class Paragraph extends NodeBase {
@@ -8,8 +12,8 @@ export default class Paragraph extends NodeBase {
   readonly name = 'paragraph'
   styles = paragraph
 
-  constructor(target: HTMLElement) {
-    super(target)
+  constructor(target: HTMLElement, state: Store, eventbus: EventBus) {
+    super(target, state, eventbus)
 
     this.init()
     this.registerKeyEvents()

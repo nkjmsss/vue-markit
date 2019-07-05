@@ -47,6 +47,4 @@ function setCaret(
   }
 }
 
-export {
-  setCaret, //
-}
+export default setCaret
