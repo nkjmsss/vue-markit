@@ -7,10 +7,7 @@ export default class Paragraph extends Node {
   styles = paragraph
 
   constructor(target: HTMLElement) {
-    super(target)
-
-    this.type = 'block'
-    this.name = 'paragraph'
+    super(target, 'block', 'paragraph')
 
     this.init()
     this.registerKeyEvents()

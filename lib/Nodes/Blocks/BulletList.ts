@@ -3,10 +3,7 @@ import Node from '../Node'
 
 export default class BulletList extends Node {
   constructor(target: HTMLElement) {
-    super(target)
-
-    this.type = 'block'
-    this.name = 'bulletlist'
+    super(target, 'block', 'bullet-list')
 
     this.init()
   }
