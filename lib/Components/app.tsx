@@ -1,7 +1,6 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { VNode, CreateElement } from 'vue'
 import Editor, { EditorConfiguration } from '../Editor'
-import styles from '../Styles'
 
 @Component
 class VueMarkit extends Vue {
@@ -49,7 +48,7 @@ class VueMarkit extends Vue {
   setEvents(): void {}
 
   render(h: CreateElement): VNode {
-    return <article ref="target" class={styles}></article>
+    return <article ref="target"></article>
   }
 }
 

@@ -1,8 +1,11 @@
 import { Key } from 'ts-keycode-enum'
 import { Node } from '../Node'
 import { wrap } from '../../Utils/wrap'
+import { paragraph } from '../../Styles'
 
 export default class Paragraph extends Node {
+  styles = paragraph
+
   constructor(target: HTMLElement) {
     super(target)
 

@@ -1,18 +1,15 @@
-import { css } from 'emotion'
+import { Interpolation } from 'emotion'
 import paragraph from './paragraph'
 
-export default css({
+const base: Interpolation = {
   border: '1px solid #bbb', // FIXME
   outline: 'none',
   position: 'relative',
+}
 
-  '&[data-placeholder-active=true]::before': {
-    content: 'attr(data-placeholder)',
-    color: '#aaa',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
+export default base
 
-  p: paragraph,
-})
+export {
+  base, //
+  paragraph,
+}

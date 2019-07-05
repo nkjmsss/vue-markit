@@ -1,3 +1,4 @@
+import { css, Interpolation } from 'emotion'
 import Emitter from './Utils/Emitter'
 import { Events, EventName } from './Events'
 import toPascalCase from './Utils/toPascalCase'
@@ -6,9 +7,11 @@ import {
   Paragraph, //
   BulletList,
 } from './Nodes/Blocks'
+import baseStyle from './Styles'
 
 export interface EditorConfiguration {
   Nodes?: (typeof Node)[]
+  StyleOverides: Interpolation
 }
 
 export default class Editor extends Emitter<EventName> {
@@ -17,6 +20,7 @@ export default class Editor extends Emitter<EventName> {
     Nodes: [
       BulletList, //
     ],
+    StyleOverides: {},
   }
   private target: HTMLElement
 
@@ -63,8 +67,17 @@ export default class Editor extends Emitter<EventName> {
   }
 
   initNodes(): void {
+    const styles = [baseStyle]
+
     this.coreNodes.concat(this.options.Nodes).forEach(cls => {
-      new cls(this.target)
+      const node = new cls(this.target)
+      styles.push(node.styles)
     })
+
+    // override styles
+    styles.push(this.options.StyleOverides)
+
+    // finally, apply style to the target element
+    this.target.classList.add(css(styles))
   }
 }

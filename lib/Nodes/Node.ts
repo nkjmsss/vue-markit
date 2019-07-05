@@ -1,3 +1,4 @@
+import { Interpolation } from 'emotion'
 import Store from './Core/Store'
 
 const storeInstance = new Store()
@@ -11,6 +12,7 @@ export class Node {
   type!: 'block' | 'inline'
   name!: string
   state: NodeStore = storeInstance
+  styles: Interpolation = {}
 
   constructor(target: HTMLElement) {
     this.target = target
