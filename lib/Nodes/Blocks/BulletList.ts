@@ -1,5 +1,5 @@
 import { Key } from 'ts-keycode-enum'
-import { Node } from '../Node'
+import Node from '../Node'
 
 export default class BulletList extends Node {
   constructor(target: HTMLElement) {

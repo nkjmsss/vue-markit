@@ -1,5 +1,5 @@
 import { Key } from 'ts-keycode-enum'
-import { Node } from '../Node'
+import Node from '../Node'
 import { wrap } from '../../Utils/wrap'
 import { paragraph } from '../../Styles'
 
@@ -23,7 +23,8 @@ export default class Paragraph extends Node {
   }
 
   private registerKeyEvents(): void {
-    this.on('keydown', e => {
+    this.eventbus.on('keydown', e => {
+      console.log(e)
       switch (e.keyCode) {
         case Key.Backspace:
           // don't allow removing first p tag

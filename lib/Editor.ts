@@ -2,7 +2,7 @@ import { css, Interpolation } from 'emotion'
 import Emitter from './Utils/Emitter'
 import { Events, EventName } from './Events'
 import toPascalCase from './Utils/toPascalCase'
-import { Node } from './Nodes/Node'
+import Node from './Nodes/Node'
 import {
   Paragraph, //
   BulletList,
