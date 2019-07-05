@@ -29,11 +29,7 @@ class VueMarkit extends Vue {
     deep: true,
     immediate: true,
   })
-  onOptionsChanged(newval: EditorConfiguration): void {
-    if (this.editor) {
-      this.editor.emit('optionChange', newval)
-    }
-  }
+  onOptionsChanged(newval: EditorConfiguration): void {}
 
   mounted(): void {
     this.editor = new Editor(

@@ -1,9 +1,12 @@
 import { Key } from 'ts-keycode-enum'
-import Node from '../Node'
+import { NodeBase } from '../Node'
 
-export default class BulletList extends Node {
+export default class BulletList extends NodeBase {
+  readonly isBlock = true
+  readonly name = 'bullet-list'
+
   constructor(target: HTMLElement) {
-    super(target, 'block', 'bullet-list')
+    super(target)
 
     this.init()
   }

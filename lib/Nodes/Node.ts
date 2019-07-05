@@ -11,19 +11,17 @@ const NodeEvents = [] as const
 export default interface Node extends Emitter<(typeof NodeEvents)[any]> {}
 
 export default class Node extends Emitter<(typeof NodeEvents)[any]> {
+  readonly isBlock!: boolean
+  readonly name!: string
   readonly target: HTMLElement
-  readonly type: 'block' | 'inline'
-  readonly name: string
   readonly state = storeInstance
   readonly eventbus = eventbusInstance
   styles: Interpolation = {}
 
-  constructor(target: HTMLElement, type: 'block' | 'inline', name: string) {
+  constructor(target: HTMLElement) {
     super()
 
     this.target = target
-    this.type = type
-    this.name = name
 
     this.initEventBus()
     this.initStore()
@@ -47,4 +45,9 @@ export default class Node extends Emitter<(typeof NodeEvents)[any]> {
       // ex) register some events
     }
   }
+}
+
+export abstract class NodeBase extends Node {
+  abstract readonly isBlock: boolean
+  abstract readonly name: string
 }
