@@ -18,13 +18,19 @@ export default class KeyboardEvents extends FunctionalNode {
     this.target.addEventListener('keydown', e => {
       this.eventbus.emit('keydown', e)
     })
+
+    this.target.addEventListener('keypress', e => {
+      this.eventbus.emit('keypress', e)
+    })
+
+    this.target.addEventListener('keyup', e => {
+      this.eventbus.emit('keyup', e)
+    })
   }
 
   registerEvents(): void {
-    this.eventbus.on('keydown', this.handleKeyDown.bind(this))
-  }
-
-  handleKeyDown(e: KeyboardEvent): void {
-    this.state.commit('childNodes', Array.from(this.target.childNodes))
+    this.eventbus.on('keyup', e => {
+      this.state.commit('childNodes', Array.from(this.target.childNodes))
+    })
   }
 }
