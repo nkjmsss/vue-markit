@@ -1,7 +1,7 @@
 import { FunctionalNode } from '../Node'
+import Store from '../../Store'
 import {
-  Store, //
-  EventBus,
+  EventBus, //
 } from '../../Utils'
 
 export default class KeyboardEvents extends FunctionalNode {
@@ -30,7 +30,7 @@ export default class KeyboardEvents extends FunctionalNode {
 
   registerEvents(): void {
     this.eventbus.on('keyup', e => {
-      this.state.commit('childNodes', Array.from(this.target.childNodes))
+      this.state.commmit('setChildNodes', Array.from(this.target.childNodes))
     })
   }
 }

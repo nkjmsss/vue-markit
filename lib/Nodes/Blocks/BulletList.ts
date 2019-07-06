@@ -1,8 +1,8 @@
 import { Key } from 'ts-keycode-enum'
 import { NodeBase } from '../Node'
+import Store from '../../Store'
 import {
-  Store, //
-  EventBus,
+  EventBus, //
 } from '../../Utils'
 
 export default class BulletList extends NodeBase {

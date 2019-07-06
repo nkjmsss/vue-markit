@@ -3,8 +3,8 @@ import {
   toPascalCase, //
   Emitter,
   EventBus,
-  Store,
 } from './Utils'
+import Store from './Store'
 import Node from './Nodes/Node'
 import {
   Paragraph, //

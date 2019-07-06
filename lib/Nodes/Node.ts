@@ -1,9 +1,9 @@
 import { Interpolation } from 'emotion'
 import {
   Emitter, //
-  Store,
   EventBus,
 } from '../Utils'
+import Store from '../Store'
 
 const NodeEvents = [] as const
 

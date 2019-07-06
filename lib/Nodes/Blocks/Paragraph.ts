@@ -1,8 +1,8 @@
 import { Key } from 'ts-keycode-enum'
 import { NodeBase } from '../Node'
+import Store from '../../Store'
 import {
   wrap, //
-  Store,
   EventBus,
 } from '../../Utils'
 import { paragraph } from '../../Styles'
