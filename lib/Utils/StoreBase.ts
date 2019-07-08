@@ -1,4 +1,4 @@
-import { cloneDeep, throttle } from 'lodash'
+import { cloneDeep, debounce } from 'lodash'
 import {
   deepReadOnly, //
   Emitter,
@@ -31,7 +31,7 @@ export default abstract class StoreBase<
   }
 
   protected init(): void {
-    this.setCache(this)
+    this.cache = this.makeCache()
   }
 
   public commit<T extends keyof StoreBase<State, Mutations>['mutations']>(
@@ -57,10 +57,16 @@ export default abstract class StoreBase<
     return deepFreeze(state)
   }
 
-  private setCache = throttle((newState: StoreBase<State, Mutations>) => {
-    this.cache = newState.makeCache()
-    this.emit('updated', this)
-  }, 100)
+  private setCache = debounce(
+    (newState: StoreBase<State, Mutations>) => {
+      this.cache = newState.makeCache()
+      this.emit('updated', this)
+    },
+    50,
+    {
+      maxWait: 100,
+    }
+  )
 
   private registerEvents(): void {
     this.on('beforeChange', newState => {
