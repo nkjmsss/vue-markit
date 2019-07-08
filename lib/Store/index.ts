@@ -10,7 +10,7 @@ export default class Store extends StoreBase<
     childNodes: [],
   }
 
-  protected mutations = {
+  protected readonly mutations = {
     setChildNodes: (payload: Store['state']['childNodes']) => {
       this.state.childNodes = payload
     },

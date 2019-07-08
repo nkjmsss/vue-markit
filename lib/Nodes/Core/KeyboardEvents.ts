@@ -30,7 +30,7 @@ export default class KeyboardEvents extends FunctionalNode {
 
   registerEvents(): void {
     this.eventbus.on('keyup', e => {
-      this.state.commmit('setChildNodes', Array.from(this.target.childNodes))
+      this.state.commit('setChildNodes', Array.from(this.target.childNodes))
     })
   }
 }

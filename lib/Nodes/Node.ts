@@ -5,17 +5,15 @@ import {
 } from '../Utils'
 import Store from '../Store'
 
-const NodeEvents = [] as const
+type NodeEvents = {}
 
-export default interface Node extends Emitter<(typeof NodeEvents)[any]> {}
-
-export default class Node extends Emitter<(typeof NodeEvents)[any]> {
+export default class Node extends Emitter<NodeEvents> {
   readonly functional?: boolean
   readonly isBlock?: boolean
   readonly name?: string
-  readonly target: HTMLElement
-  readonly state: Store
-  readonly eventbus: EventBus
+  protected readonly target: HTMLElement
+  protected readonly state: Store
+  protected readonly eventbus: EventBus
   styles: Interpolation = {}
 
   constructor(target: HTMLElement, state: Store, eventbus: EventBus) {

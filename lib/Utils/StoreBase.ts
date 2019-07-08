@@ -1,33 +1,26 @@
 import { cloneDeep, throttle } from 'lodash'
-import { deepReadOnly, Emitter, deepFreeze } from '.'
+import {
+  deepReadOnly, //
+  Emitter,
+  deepFreeze,
+} from '.'
 
-export const StoreEvents = [
-  'change', //
-] as const
-
-export type StoreEventsName = (typeof StoreEvents)[any]
-
-type FirstArg<T> = T extends (payload: infer T) => any ? T : never
-
-export default interface StoreBase<
+export type StoreEvents<
   State extends object,
-  Mutations extends Record<string, (arg: any) => void>
-> extends Emitter<StoreEventsName> {
-  emit(event: 'change', store: StoreBase<State, Mutations>)
-  emit(event: StoreEventsName, ...args: any)
-
-  on(event: 'change', fn: (store: StoreBase<State, Mutations>) => void)
-  on(event: StoreEventsName, fn: (...args: any) => void)
+  Mutations extends Record<string, (...arg: [any?]) => void>
+> = {
+  beforeChange: [StoreBase<State, Mutations>]
+  updated: [StoreBase<State, Mutations>]
 }
 
 export default abstract class StoreBase<
   State extends object,
-  Mutations extends Record<string, (arg: any) => void>
-> extends Emitter<StoreEventsName> {
+  Mutations extends Record<string, (...arg: [any?]) => void>
+> extends Emitter<StoreEvents<State, Mutations>> {
   protected abstract state: State
 
   // readonly cloned state
-  private cache!: deepReadOnly<StoreBase<State, Mutations>['state']>
+  protected cache!: deepReadOnly<StoreBase<State, Mutations>['state']>
 
   protected abstract mutations: Mutations
 
@@ -41,15 +34,21 @@ export default abstract class StoreBase<
     this.setCache(this)
   }
 
-  public commmit<T extends keyof StoreBase<State, Mutations>['mutations']>(
+  public commit<T extends keyof StoreBase<State, Mutations>['mutations']>(
     key: T,
-    payload: FirstArg<StoreBase<State, Mutations>['mutations'][T]>
+    ...payload: Parameters<StoreBase<State, Mutations>['mutations'][T]>
   ): void {
-    this.mutations[key].apply(this, [payload])
-    this.emit('change', this)
+    this.mutations[key].apply(this, payload)
+    this.emit('beforeChange', this)
   }
 
-  get getState(): StoreBase<State, Mutations>['cache'] {
+  // very unsafe method
+  // You wouldn't need this as long as you are using this correctly
+  public forceUpdate(): void {
+    this.cache = this.makeCache()
+  }
+
+  public get getState(): StoreBase<State, Mutations>['cache'] {
     return this.cache
   }
 
@@ -60,10 +59,11 @@ export default abstract class StoreBase<
 
   private setCache = throttle((newState: StoreBase<State, Mutations>) => {
     this.cache = newState.makeCache()
-  }, 100) // TODO find good refresh rate
+    this.emit('updated', this)
+  }, 100)
 
   private registerEvents(): void {
-    this.on('change', newState => {
+    this.on('beforeChange', newState => {
       this.setCache(newState)
     })
   }

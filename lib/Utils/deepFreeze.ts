@@ -1,6 +1,6 @@
 import deepReadOnly from './deepReadOnly'
 
-export default function deepFreeze<T>(obj: T): deepReadOnly<T> {
+export default function deepFreeze<T extends any>(obj: T): deepReadOnly<T> {
   Object.getOwnPropertyNames(obj).forEach(name => {
     const v = obj[name]
 

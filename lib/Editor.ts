@@ -1,7 +1,6 @@
 import { css, Interpolation } from 'emotion'
 import {
-  toPascalCase, //
-  Emitter,
+  Emitter, //
   EventBus,
 } from './Utils'
 import Store from './Store'
@@ -13,14 +12,14 @@ import {
 import { KeyboardEvents } from './Nodes/Core'
 import baseStyle from './Styles'
 
-export interface EditorConfiguration {
-  Nodes?: (typeof Node)[]
+export type EditorConfiguration = {
+  Nodes: (typeof Node)[]
   StyleOverides: Interpolation
 }
 
-const EventList = [] as const
+type EditorEvents = {}
 
-export default class Editor extends Emitter<(typeof EventList)[any]> {
+export default class Editor extends Emitter<EditorEvents> {
   private coreNodes: (typeof Node)[] = [
     Paragraph, //
     KeyboardEvents,
@@ -45,7 +44,9 @@ export default class Editor extends Emitter<(typeof EventList)[any]> {
 
     this.target = target
 
-    this.setOptions(options)
+    if (options) {
+      this.setOptions(options)
+    }
     this.init()
     this.registerEvents()
     this.initNodes()
@@ -55,27 +56,17 @@ export default class Editor extends Emitter<(typeof EventList)[any]> {
     this.target.contentEditable = 'true'
   }
 
-  setOptions(options: EditorConfiguration | undefined): void {
-    if (!options) {
-      return
-    }
+  setOptions(options: Partial<EditorConfiguration>): void {
+    const keys = Object.keys(options) as (keyof EditorConfiguration)[]
 
-    Object.keys(options)
+    keys
       .filter(key => this.options[key] !== options[key])
-      .forEach(key => {
-        this.options[key] = options[key]
+      .forEach(<K extends keyof EditorConfiguration>(key: K) => {
+        this.options[key] = options[key] as EditorConfiguration[K]
       })
   }
 
-  registerEvents(): void {
-    EventList.forEach(ev => {
-      const handlerName = `handle${toPascalCase(ev)}`
-
-      if (this[handlerName]) {
-        this.on(ev, this[handlerName].bind(this))
-      }
-    })
-  }
+  registerEvents(): void {}
 
   initNodes(): void {
     const styles = [baseStyle]

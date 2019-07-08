@@ -1,7 +1,7 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { VNode, CreateElement } from 'vue'
 import Editor, { EditorConfiguration } from '../Editor'
-import { Store } from '../Utils'
+import Store from '../Store'
 
 @Component
 class VueMarkit extends Vue {

@@ -1,6 +1,6 @@
 export { default as deepFreeze } from './deepFreeze'
 export { default as deepReadOnly } from './deepReadOnly'
-export { default as Emitter } from './Emitter'
+export { default as Emitter, CallbackFn } from './Emitter'
 export { default as EventBus } from './EventBus'
 export { default as setCaret } from './setCaret'
 export { default as StoreBase } from './StoreBase'

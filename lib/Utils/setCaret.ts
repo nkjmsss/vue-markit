@@ -1,7 +1,7 @@
 type range = { start: number; end: number } | 'all'
 
-function setCaret(node: HTMLElement, position: 'before' | 'after')
-function setCaret(node: HTMLElement, position: 'inside', range?: range)
+function setCaret(node: HTMLElement, position: 'before' | 'after'): void
+function setCaret(node: HTMLElement, position: 'inside', range?: range): void
 function setCaret(
   node: HTMLElement,
   position: 'before' | 'after' | 'inside',
