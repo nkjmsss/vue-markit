@@ -46,4 +46,15 @@ export default class Emitter<T extends Record<string, Array<any>>> {
 
     return this
   }
+
+  // Fire specific event only once
+  once<K extends keyof T>(event: K, fn: CallbackFn<T[K]>): this {
+    const temp = (...args: T[K]) => {
+      fn(...args)
+      this.off(event, temp)
+    }
+    this.on(event, temp)
+
+    return this
+  }
 }

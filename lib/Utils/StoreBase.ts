@@ -24,6 +24,8 @@ export default abstract class StoreBase<
 
   protected abstract mutations: Mutations
 
+  private isUpdated = true
+
   constructor() {
     super()
 
@@ -36,9 +38,14 @@ export default abstract class StoreBase<
 
   public commit<T extends keyof StoreBase<State, Mutations>['mutations']>(
     key: T,
-    ...payload: Parameters<StoreBase<State, Mutations>['mutations'][T]>
+    ...payload:
+      | Parameters<StoreBase<State, Mutations>['mutations'][T]>
+      | deepReadOnly<Parameters<StoreBase<State, Mutations>['mutations'][T]>>
   ): void {
-    this.mutations[key].apply(this, payload)
+    this.mutations[key].apply(this, payload as Parameters<
+      StoreBase<State, Mutations>['mutations'][T]
+    >)
+    this.isUpdated = false
     this.emit('beforeChange', this)
   }
 
@@ -49,6 +56,7 @@ export default abstract class StoreBase<
   }
 
   public get getState(): StoreBase<State, Mutations>['cache'] {
+    console.log(this.isUpdated)
     return this.cache
   }
 
@@ -62,7 +70,7 @@ export default abstract class StoreBase<
       this.cache = newState.makeCache()
       this.emit('updated', this)
     },
-    50,
+    70,
     {
       maxWait: 100,
     }
@@ -71,6 +79,9 @@ export default abstract class StoreBase<
   private registerEvents(): void {
     this.on('beforeChange', newState => {
       this.setCache(newState)
+    })
+    this.on('updated', () => {
+      this.isUpdated = true
     })
   }
 }
